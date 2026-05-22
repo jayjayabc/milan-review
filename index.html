@@ -807,12 +807,12 @@ function renderOpinionCard(op, id) {
   let detailHtml = "";
   if (hasDetails) {
     if (hasSummary) {
-      // summary가 있으면 details는 토글로
+      // summary가 있으면 details는 토글로 (기본 펼침)
       detailHtml = `
-        <div class="opinion-detail hidden" id="detail-${id}">
+        <div class="opinion-detail" id="detail-${id}">
           <ul>${op.details.map(d => `<li>${d}</li>`).join('')}</ul>
         </div>
-        <button class="toggle-btn" onclick="toggleDetail('${id}')">상세 보기 ▼</button>
+        <button class="toggle-btn" onclick="toggleDetail('${id}')">접기 ▲</button>
       `;
     } else {
       // summary가 없으면 details를 바로 표시
