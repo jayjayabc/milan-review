@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="ko" style="color-scheme: light;">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>주요 채권 검토의견</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+<style>
+/* ── FORCE LIGHT THEME — block all dark-mode auto-inversion ────── */
+html {
+  color-scheme: light only;
+  -webkit-color-scheme: light only;
+  forced-color-adjust: none;
+  background: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  html, body { background: #ffffff !important; color: #1a1a2e !important; }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body {
+  font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #ffffff;
+  color: #1a1a2e;
+  line-height: 1.6;
+  min-height: 100vh;
+  font-feature-settings: 'tnum';
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+}
+.container { max-width: 1200px; margin: 0 auto; padding: 20px 16px 40px; }
+
+/* ── HEADER ──────────────────────── */
+header { margin-bottom: 36px; padding-bottom: 24px; border-bottom: 2px solid #e9ecef; }
+.eyebrow {
+  display: inline-block;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.16em;
+  color: #495057; text-transform: uppercase; margin-bottom: 12px;
+}
+.eyebrow .tag {
+  background: #1a1a2e; color: #fff;
+  padding: 4px 9px; border-radius: 3px; margin-right: 8px;
+}
+header h1 {
+  font-size: 28px; font-weight: 800; color: #1a1a2e;
+  margin-bottom: 8px; letter-spacing: -0.02em; line-height: 1.3;
+}
+header .subtitle { font-size: 14px; color: #495057; margin-bottom: 14px; }
+header .subtitle b { color: #1a1a2e; font-weight: 700; }
+.source-row {
+  display: flex; gap: 16px; flex-wrap: wrap;
+  font-size: 12px; color: #868e96;
+}
+.source-row b { color: #495057; font-weight: 600; }
+
+/* ── KPI STRIP ────────────────────── */
+.kpi-strip {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: #e9ecef;
+  margin: 24px 0 36px;
+  border: 1px solid #e9ecef; border-radius: 8px; overflow: hidden;
+}
+.kpi-cell { background: #fff; padding: 14px 16px; }
+.kpi-label {
+  font-size: 10.5px; letter-spacing: 0.08em;
+  color: #868e96; text-transform: uppercase;
+  font-weight: 600; margin-bottom: 4px;
+}
+.kpi-value {
+  font-size: 20px; font-weight: 800; color: #1a1a2e;
+  letter-spacing: -0.01em;
+}
+.kpi-value small { font-size: 12px; font-weight: 600; color: #868e96; margin-left: 2px; }
+
+/* ── SECTION TITLE ────────────────── */
+.section-title {
+  font-size: 13px; font-weight: 700; letter-spacing: 0.06em;
+  color: #495057; text-transform: uppercase;
+  margin: 0 0 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-title::before {
+  content: ''; width: 3px; height: 14px; background: #4263eb; border-radius: 1px;
+}
+
+/* ── BOND CARD GRID (DEPTH 1) ─────── */
+.bond-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin-bottom: 40px;
+}
+.bond-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 22px 20px 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  border: 1px solid #e9ecef;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  display: flex; flex-direction: column;
+}
+.bond-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.10);
+  border-color: #4263eb;
+}
+.bond-card:active { transform: translateY(0); }
+.bond-name {
+  font-size: 17px; font-weight: 700; color: #1a1a2e;
+  margin-bottom: 4px; letter-spacing: -0.015em;
+}
+.bond-amount {
+  font-size: 14px; color: #4263eb; font-weight: 700;
+  margin-bottom: 12px;
+}
+.bond-desc {
+  font-size: 12.5px; color: #495057; line-height: 1.55;
+  margin-bottom: 14px;
+  flex: 1;
+}
+.bond-meta { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+.meta-tag {
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+.meta-tag.maturity { background: #e7f5ff; color: #1971c2; }
+.meta-tag.health-normal { background: #d3f9d8; color: #2b8a3e; }
+.meta-tag.health-caution { background: #fff3bf; color: #c77400; }
+
+.signals-preview {
+  display: flex; gap: 14px; flex-wrap: wrap;
+  padding-top: 12px; border-top: 1px dashed #e9ecef;
+}
+.signal-group { display: flex; align-items: center; gap: 5px; }
+.signal-group-label {
+  font-size: 10.5px; font-weight: 700; color: #868e96;
+  letter-spacing: 0.04em;
+}
+.signal-group-label.kb { color: #c77400; }
+.signal-dot {
+  width: 8px; height: 8px; border-radius: 50%; display: inline-block;
+}
+.signal-dot.green { background: #40c057; }
+.signal-dot.yellow { background: #fab005; }
+.signal-dot.red { background: #fa5252; }
+.signal-dot.na { background: #dee2e6; }
+
+.card-action {
+  position: absolute; top: 22px; right: 20px;
+  font-size: 16px; color: #adb5bd; font-weight: 600;
+}
+
+/* ── VERDICT (종합의견) ─────────────── */
+.verdict-section {
+  background: #fff;
+  border-radius: 12px;
+  padding: 28px 28px 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  border: 1px solid #e9ecef;
+  border-top: 4px solid #fab005;
+  margin-bottom: 32px;
+}
+.verdict-section h2 {
+  font-size: 18px; font-weight: 800; color: #1a1a2e;
+  margin-bottom: 20px; letter-spacing: -0.015em;
+}
+.verdict-section .v-tagline {
+  font-size: 12px; color: #868e96; margin-bottom: 20px;
+}
+.verdict-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 720px) { .verdict-grid { grid-template-columns: 1fr; } }
+.verdict-card {
+  padding: 18px 18px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+.verdict-card h3 {
+  font-size: 12px; font-weight: 800; letter-spacing: 0.04em;
+  color: #1a1a2e; margin-bottom: 12px;
+  padding-bottom: 8px; border-bottom: 1px solid #dee2e6;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.verdict-card h3 .badge {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.04em;
+  padding: 2px 7px; border-radius: 10px;
+  background: #fff; border: 1px solid #dee2e6; color: #495057;
+}
+.verdict-card.risk h3 .badge { background: #fff5f5; border-color: #ffc9c9; color: #c92a2a; }
+.verdict-card.strategy h3 .badge { background: #fff9db; border-color: #ffe066; color: #c77400; }
+.verdict-card p {
+  font-size: 13px; color: #1a1a2e; line-height: 1.7;
+}
+.verdict-card p b {
+  font-weight: 700;
+  background: linear-gradient(180deg, transparent 60%, #fff3bf 60%);
+  padding: 0 2px;
+}
+
+/* ── DETAIL PAGE (DEPTH 2) ─────────── */
+.detail-page { display: none; }
+.detail-page.active { display: block; }
+
+.back-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; color: #4263eb; font-weight: 600;
+  cursor: pointer; margin-bottom: 20px; padding: 6px 0;
+  border: none; background: none;
+  transition: color 0.2s;
+}
+.back-btn:hover { color: #364fc7; }
+.back-btn svg { width: 16px; height: 16px; }
+
+.detail-header {
+  background: #fff;
+  border-radius: 12px;
+  padding: 26px 28px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  border: 1px solid #e9ecef;
+}
+.detail-header .bond-meta { margin-bottom: 12px; }
+.detail-header h2 {
+  font-size: 22px; font-weight: 800; color: #1a1a2e;
+  letter-spacing: -0.02em; margin-bottom: 4px;
+}
+.detail-header h2 .amount {
+  font-size: 16px; color: #4263eb; font-weight: 700; margin-left: 6px;
+}
+.detail-header .desc {
+  font-size: 14px; color: #495057; margin-top: 12px; line-height: 1.6;
+}
+
+/* ── OPINION CARDS ─────────────── */
+.opinion-section { margin-bottom: 28px; }
+.opinion-section h3 {
+  font-size: 14px; font-weight: 800; margin-bottom: 14px;
+  padding: 10px 14px;
+  border-left: 4px solid #4263eb;
+  background: #edf2ff;
+  border-radius: 0 6px 6px 0;
+  color: #1a1a2e;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.opinion-section h3 .count {
+  font-size: 11px; font-weight: 700; color: #868e96; letter-spacing: 0.04em;
+}
+.opinion-section h3.kakaobank {
+  border-left-color: #fab005;
+  background: #fff9db;
+}
+.opinion-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+}
+.opinion-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 18px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  border: 1px solid #e9ecef;
+}
+.opinion-card-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 12px; padding-bottom: 10px;
+  border-bottom: 1px solid #f1f3f5;
+}
+.opinion-card-header .reviewer { font-size: 14px; font-weight: 700; color: #1a1a2e; }
+.signal-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 9px; border-radius: 12px;
+  font-size: 11px; font-weight: 700;
+  white-space: nowrap;
+}
+.signal-badge.green { background: #d3f9d8; color: #2b8a3e; }
+.signal-badge.yellow { background: #fff3bf; color: #c77400; }
+.signal-badge.red { background: #ffe3e3; color: #c92a2a; }
+.signal-badge.na { background: #f1f3f5; color: #868e96; }
+.opinion-summary {
+  font-size: 13.5px; color: #1a1a2e; line-height: 1.65;
+  margin-bottom: 4px;
+}
+.opinion-summary.bold { font-weight: 700; }
+.opinion-summary.no-opinion { color: #868e96; font-style: italic; font-weight: 500; }
+.opinion-detail {
+  font-size: 12.5px; color: #495057; line-height: 1.75;
+  padding-top: 10px; margin-top: 8px;
+  border-top: 1px solid #f1f3f5;
+}
+.opinion-detail ul { padding-left: 4px; list-style: none; }
+.opinion-detail li {
+  margin-bottom: 6px; position: relative; padding-left: 12px;
+}
+.opinion-detail li::before {
+  content: '–'; position: absolute; left: 0; top: 0; color: #adb5bd;
+}
+.opinion-detail strong { font-weight: 700; color: #1a1a2e; }
+.toggle-btn {
+  font-size: 11.5px; color: #4263eb; cursor: pointer; font-weight: 600;
+  border: none; background: none; padding: 6px 0 2px;
+  margin-top: 6px; letter-spacing: -0.01em;
+}
+.toggle-btn:hover { text-decoration: underline; }
+.hidden { display: none; }
+
+/* ── PAGE TRANSITIONS ──────────── */
+.page { opacity: 1; transition: opacity 0.18s ease; }
+.page.fade-out { opacity: 0; }
+
+/* ── FOOTER ────────────────────── */
+footer {
+  text-align: center; margin-top: 40px; padding-top: 20px;
+  border-top: 1px solid #e9ecef;
+}
+footer p { font-size: 11.5px; color: #adb5bd; line-height: 1.6; }
+footer p b { color: #868e96; }
+
+/* ── MOBILE FIRST (DEFAULT) ─────── */
+@media (max-width: 600px) {
+  .container { padding: 16px 14px 32px; }
+
+  /* Header tightened */
+  header { margin-bottom: 24px; padding-bottom: 18px; }
+  .eyebrow { font-size: 10.5px; margin-bottom: 10px; }
+  .eyebrow .tag { padding: 3px 7px; }
+  header h1 { font-size: 21px; line-height: 1.3; margin-bottom: 6px; }
+  header .subtitle { font-size: 13px; margin-bottom: 10px; }
+  .source-row { font-size: 11.5px; gap: 12px; }
+
+  /* KPI: 3 cols stays */
+  .kpi-strip { margin: 18px 0 24px; }
+  .kpi-cell { padding: 12px 10px; }
+  .kpi-label { font-size: 9.5px; margin-bottom: 3px; }
+  .kpi-value { font-size: 17px; letter-spacing: -0.02em; }
+  .kpi-value small { font-size: 11px; }
+
+  /* Bond cards: single column, larger touch targets */
+  .bond-grid { grid-template-columns: 1fr; gap: 10px; margin-bottom: 28px; }
+  .bond-card { padding: 18px 16px 16px; border-radius: 10px; }
+  .bond-card:hover { transform: none; }
+  .bond-name { font-size: 16px; }
+  .bond-amount { font-size: 13px; margin-bottom: 10px; }
+  .bond-desc { font-size: 12.5px; margin-bottom: 12px; }
+  .card-action { top: 18px; right: 16px; }
+
+  /* Verdict */
+  .verdict-section { padding: 20px 18px 18px; border-radius: 10px; }
+  .verdict-section h2 { font-size: 16px; }
+  .verdict-section .v-tagline { font-size: 11.5px; margin-bottom: 16px; }
+  .verdict-card { padding: 14px 14px; }
+  .verdict-card p { font-size: 12.5px; line-height: 1.75; }
+
+  /* Detail */
+  .back-btn { font-size: 14px; padding: 10px 0; margin-bottom: 14px; }
+  .detail-header { padding: 18px 16px; border-radius: 10px; margin-bottom: 18px; }
+  .detail-header h2 { font-size: 18px; }
+  .detail-header h2 .amount { font-size: 14px; }
+  .detail-header .desc { font-size: 13px; }
+
+  .opinion-section { margin-bottom: 22px; }
+  .opinion-section h3 { font-size: 13px; padding: 9px 12px; }
+  .opinion-cards { grid-template-columns: 1fr; gap: 10px; }
+  .opinion-card { padding: 15px 14px; border-radius: 9px; }
+  .opinion-card-header { gap: 8px; margin-bottom: 10px; padding-bottom: 9px; }
+  .opinion-card-header .reviewer { font-size: 13.5px; }
+  .opinion-summary { font-size: 13px; line-height: 1.65; }
+  .opinion-detail { font-size: 12.5px; line-height: 1.75; }
+
+  /* Toggle button — larger touch target on mobile */
+  .toggle-btn { font-size: 12.5px; padding: 8px 0 4px; }
+}
+
+/* ── DESKTOP ENHANCE ───────────── */
+@media (min-width: 720px) {
+  .bond-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1024px) {
+  .bond-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* ── PRINT ───────────────────── */
+@media print {
+  body { background: #ffffff; }
+  .container { max-width: none; padding: 0; }
+  .bond-card { box-shadow: none; break-inside: avoid; }
+  .opinion-card { box-shadow: none; break-inside: avoid; }
+  .opinion-detail.hidden { display: block !important; }
+  .toggle-btn { display: none; }
+  .back-btn { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ━━━ MAIN PAGE ━━━ -->
+  <div id="main-page" class="page">
+    <header>
+      <div class="eyebrow"><span class="tag">PROJECT MILAN</span>마스턴캐피탈 인수 검토</div>
+      <h1>주요 채권 검토의견</h1>
+      <p class="subtitle">총 <b>4건</b> · 잔액 <b>90.6억</b> · 한투 3개 자문 + 카뱅 2개 부서 검토</p>
+      <div class="source-row">
+        <span><b>출처</b> 2026.05.21 컨콜 (61분)</span>
+        <span><b>작성</b> 2026.05.22</span>
+      </div>
+    </header>
+
+    <h2 class="section-title">채권별 검토</h2>
+    <div class="bond-grid" id="bond-grid"></div>
+
+    <div class="verdict-section">
+      <h2>종합의견 · 합계 90.6억</h2>
+      <div class="verdict-grid">
+        <div class="verdict-card risk">
+          <h3>리스크실 <span class="badge">총 29억 충당금</span></h3>
+          <p>리스크실에서는 함안 물류센터 후순위대출 17억원은 전액 충당금 적립이 필요하고, 그외의 전체 대출자산에 대해서도 추가로 12억원 정도의 충당금 적립이 필요하다고 판단하고 있음 <b>(총 29억원)</b>. 자세한 내용은 건전성관리팀의 신성장투자협의회 사전의견 참조</p>
+        </div>
+        <div class="verdict-card strategy">
+          <h3>전략팀 <span class="badge">Binding Offer −12억</span></h3>
+          <p>경쟁 인수자가 존재하는 상황에서의 딜 성사 가능성을 고려한 판단이 필요함. 주요 채권의 최대 부실위험은 약 <b>17~37억 수준</b>으로, 본건 인수 후 추진하고자 하는 사업적 기회 대비 감내핧 수준으로 판단되므로 <b>Binding Offer를 12억 낮추는 방식으로 반영</b>하고자 함</p>
+        </div>
+      </div>
+    </div>
+
+    <footer><p><b>내부 검토용 · 대외비</b><br>본건 인수 의사결정을 위한 경영진 내부 참고용. 외부 공유 금지.</p></footer>
+  </div>
+
+  <!-- ━━━ DETAIL PAGE ━━━ -->
+  <div id="detail-page" class="page" style="display:none;"></div>
+</div>
+
+<script>
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// BOND DATA — 정리V2 시트 원문 그대로
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const bonds = [
+  {
+    id: 1,
+    name: "이천 물류센터",
+    amount: "20억",
+    maturity: "26.06.11",
+    health: "정상",
+    healthClass: "health-normal",
+    description: "현대그린푸드가 53% 임차, 현재 공실 0%인 상온/저온 혼합 물류센터",
+    opinions: {
+      hantu: [
+        {
+          reviewer: "캐피탈",
+          signal: "yellow",
+          summaryBold: true,
+          summary: "임차 연장 여부 확인 후, 만기 도래시 리파이낸싱 단계 회수 추천",
+          details: [
+            "현 임차인들의 임차 만기/연장 확인 필요",
+            "임차인 존재 여부에 따라 매각 시 가격 차이 30% 이상",
+            "평당 BEP가 인근 평균 대비 조금 높은 수준이긴 함",
+            "후순위임에 따라 임차 연장 후 리파이낸싱 단계에서 회수 시도 추천"
+          ]
+        },
+        {
+          reviewer: "저축은행",
+          signal: "green",
+          summaryBold: true,
+          summary: "현 시점 회수가치는 있으며, 주요 임차인인 현대그린푸드 이전 위험은 낮아 보임",
+          details: [
+            "저온/상온 복합창고로 최근 거래가 741만원/평 수준이면 회수 가능",
+            "53% 임차중인 현대그린푸드 이탈 가능성은 낮아 보임(저온창고 설비는 이전 어려운데, 35억 기투자)",
+            "단, 주요 임차인 이탈시 저온창고 수요 확보 어려우며, 공실 이슈 시 인근 마장면 사례(평당 590만원)로는 회수가능성 떨어짐"
+          ]
+        },
+        {
+          reviewer: "리얼에셋",
+          signal: "green",
+          summaryBold: true,
+          summary: "정상 자산으로 판단됨. 임차 지속 가능성 및 임대료 경쟁력이 강점",
+          details: [
+            "이천 지역 물류센터 신규 공급 감소 중이며, 건축단가 상승 중",
+            "임대료 수준도 타 물류센터 비교 시 경쟁력 보유",
+            "현대그린푸드의 설비 투자로 이전 수요 낮아보이고, '28년 4분기까지 연장한 것으로 확인됨",
+            "당사(리얼에셋)에 매각한다면 검토할 의사도 있음"
+          ]
+        }
+      ],
+      kakaobank: [
+        {
+          reviewer: "리스크실",
+          signal: "na",
+          summary: "",
+          details: [
+            "주요 임차인들의 잔여 임차기간이 짧고, 현재 물류센터 투자에 대한 비우호적인 분위기로인해 기한이익상실 시 후순위대출의 상환가능성에 우려가 있음",
+            "앵커임차인인 현대그린푸드(임대료 기준 전체 61% 차지)의 임차료가 상대적으로 낮은 수준이고 기투자한 capex 규모를 감안할 때 계약연장의 가능성이 높을 것으로 보이며, 수도권 교통 요충지에 위치한 입지 등을 고려할 때 이를 바탕으로 리파이낸싱은 기대할 수도 있을 것으로 보임",
+            "<strong>전액 충당금 설정까지는 필요하지 않을 것으로 보이나 요주의 자산으로 관리는 필요</strong> (리파이낸싱 기회가 오면 적극적으로 exit을 고려해야 할 것임)"
+          ]
+        },
+        {
+          reviewer: "전략팀",
+          signal: "na",
+          summaryBold: true,
+          summary: "공실률 0%인 물류센터로 회수가능성 높다 판단됨. 추가 가격 조정할 사항은 아님",
+          details: [
+            "주요임차인인 현대그린푸드 이탈 가능성 낮고, 여타 임차계약도 연장 이어지는 상황",
+            "이천 지역내에서도 고속도로 인접 등 입지 우위",
+            "이에 따라 감액 조정 요구할 근거는 미약"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    id: 2,
+    name: "함안 물류센터",
+    amount: "17억",
+    maturity: "27.05.07",
+    health: "요주의",
+    healthClass: "health-caution",
+    description: "홈플러스 허브 물류센터",
+    opinions: {
+      hantu: [
+        {
+          reviewer: "캐피탈",
+          signal: "red",
+          summaryBold: true,
+          summary: "회수 가능성 및 신규 임차인 확보 난이도 고려 시 충당금 상향 필요",
+          details: [
+            "홈플러스 경영상황 및 후순위임을 고려 시 회수 가능성이 낮아보임",
+            "임대료 연체 시 신규 임차인이 필요하나, 입지상 난이도 높음",
+            "시나리오별 판단하여 충당금에 대한 고려가 필요해보임"
+          ]
+        },
+        {
+          reviewer: "저축은행",
+          signal: "red",
+          summaryBold: true,
+          summary: "전액 회수가능성은 어려우나, 임차 유지 시 이자 수취는 가능",
+          details: [
+            "홈플러스 청산하지 않는 한 동 센터 임대 수요는 유지 예상",
+            "홈플러스 외 타사의 임차 니즈는 거의 없어 보이는 입지",
+            "홈플러스 임차 기간 중 이자 수취가 유일한 방안으로 보임"
+          ]
+        },
+        {
+          reviewer: "리얼에셋",
+          signal: "red",
+          summaryBold: true,
+          summary: "홈플러스 이탈/미이탈 시 모두 이슈이기에 충당금을 쌓아야 할 자산임",
+          details: [
+            "임차 지속 가능성: 영남권 점포 축소, 홈플 익스프레스 매각 시 공실 우려, 회생안에 따른 임대료 조정 우려",
+            "대체 임차 가능성: 창고 유형 변경시 투자 부담으로 인해 임차인 확보에 어려움 예상",
+            "LTV/회수가치: 현 LTV는 임차 40년 가정 기준이기에, 조정시 LTV 상승으로 회수 가치 급락"
+          ]
+        }
+      ],
+      kakaobank: [
+        {
+          reviewer: "리스크실",
+          signal: "na",
+          summary: "책임 임차인인 홈플러스의 회생신청에 따라 향후 임대수입의 불확실성이 크며, 물건의 성격 및 지리적 위치 등을 감안할 때 홈플러스를 대체할 신규 임차인 확보가 쉽지 않을 것으로 예상되므로, 해당 대출자산이 후순위대출임을 감안할 때 전액 회수가 어려울 것으로 보임. <strong>100% 충당금 전입 요구됨.</strong>",
+          details: []
+        },
+        {
+          reviewer: "전략팀",
+          signal: "na",
+          summaryBold: true,
+          summary: "홈플러스 임차 불확실성에 따라 일부 감액을 협의할만한 대상. Non-Binding Offer 대비 Binding Offer 12억 낮추는 근거로 반영하고자 함.",
+          details: [
+            "홈플러스 회생안에 따라 회수가능성이 크게 좌우되나, 본 차주(펀드)의 대체임차인 확보 가능성도 일부 존재함",
+            "핵심 허브물류센터로서 1-2년내 임차 연장 가능성은 높으나 전액 회수가능성은 불확실"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    id: 3,
+    name: "여수 신라스테이",
+    amount: "20억",
+    maturity: "26.10.31",
+    health: "요주의",
+    healthClass: "health-caution",
+    description: "'22년 10월 오픈한 여수의 신라스테이",
+    opinions: {
+      hantu: [
+        {
+          reviewer: "캐피탈",
+          signal: "green",
+          summaryBold: true,
+          summary: "대환 통한 회수는 가능해 보이며, 그대로 Exit 또는 연장하더라도 중순위 참여 추천",
+          details: [
+            "당사도 검토했던 건이며, 최근 OCC/ADR 등 실적 개선 추세",
+            "리파이낸싱이 예상되며, 980-1,050억 가치로 추정되어 대환은 가능 예상",
+            "단, 여수의 관광 매력도 불확실성 존재로 잠정 exit 또는 중순위 참여 추천"
+          ]
+        },
+        {
+          reviewer: "저축은행",
+          signal: "yellow",
+          summaryBold: true,
+          summary: "이자 수취는 가능하나, 매출/영업이익률 상승 가능성이 낮아 회수 가능성 의문",
+          details: [
+            "신라스테이 브랜드임에도 매출 145억, 영업이익 60억으로 수익규모 저조",
+            "당장 디폴트는 아니겠으나, 선순위 대출금 820억원 고려하면 매각시 후순위로서 대환 가능성 의문",
+            "여수 관광 수요는 현 상태 유지 예상, 호텔은 실질적 감가상각 발생할 것",
+            "차주 관계사인 우미그룹이 차주(이스턴투자개발)에 투자 의지 불확실"
+          ]
+        },
+        {
+          reviewer: "리얼에셋",
+          signal: "na",
+          summary: "검토 의견 없음",
+          details: [],
+          noOpinion: true
+        }
+      ],
+      kakaobank: [
+        {
+          reviewer: "리스크실",
+          signal: "na",
+          summary: "",
+          details: [
+            "현재 이미 높은 OCC 수준을 감안할 때 매출액의 업사이드는 크지 않아 보임. 단기간 내에 이자 지급불능에 따른 Default 가능성은 낮은 것으로 보이나, 현재 수준의 DSCR(이자상환능력)이 1.3에 불과하므로 영업을 통한 원금 회수는 어려움이 있을 것으로 판단됨.",
+            "다만, 호텔신라와 20년간 위탁운영계약 체결 중이고('22년~), 이익이 꾸준히 증가하고 있으며, 준공 5년차 신규 건물인 점 등을 감안할 때, 해당 대출자산은 리파이낸싱을 기대할 수 있는 측면이 있어 <strong>전액 충당금 설정까지는 필요하지 않으나, 요주의 자산으로 관리는 필요</strong> (리파이낸싱 기회가 오면 반드시 exit해야 할 것임)"
+          ]
+        },
+        {
+          reviewer: "전략팀",
+          signal: "na",
+          summaryBold: true,
+          summary: "최근 영업성과 추세 고려시 대환은 가능할 것으로 보여 추가 가격 조정을 주장하기는 어려워 보임",
+          details: [
+            "3분기 중 여수 섬박람회 등 관광이벤트 고려시 성과 증가세 단기간 유지 예상",
+            "오픈 4년 이내의 지역 내 경쟁력 있는 호텔이기에 대환 가능성 기대"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    id: 4,
+    name: "HDX(의료기기사)",
+    amount: "33.6억",
+    maturity: "26.03 / 26.07 (2건)",
+    health: "정상",
+    healthClass: "health-normal",
+    description: "10개 대학병원에 CT장비 등을 납품하고 사용료를 원금균등분할로 수취",
+    opinions: {
+      hantu: [
+        {
+          reviewer: "캐피탈",
+          signal: "green",
+          summaryBold: true,
+          summary: "의료기기 리스이며, 병원 영업도 잘 되기에 회수가 크게 우려되지 않음",
+          details: [
+            "대학병원 파트너라 양호해 보임",
+            "카운터파티 병원들의 영업 또한 양호해 보임"
+          ]
+        },
+        {
+          reviewer: "저축은행",
+          signal: "green",
+          summaryBold: true,
+          summary: "회수에 별 이슈 없을 것",
+          details: [
+            "주요한 병원 거래처에 CT장비를 납품하고 리스료를 수취하는 구조",
+            "최초 설치 후 교체가 쉽지 않고 약물 등 소모품 소비도 지속됨"
+          ]
+        },
+        {
+          reviewer: "리얼에셋",
+          signal: "na",
+          summary: "검토 의견 없음",
+          details: [],
+          noOpinion: true
+        }
+      ],
+      kakaobank: [
+        {
+          reviewer: "리스크실",
+          signal: "na",
+          summary: "별도 의견 없음",
+          details: [],
+          noOpinion: true
+        },
+        {
+          reviewer: "전략팀",
+          signal: "na",
+          summaryBold: true,
+          summary: "대학병원 납품 의료기기 매출채권 담보 대출로서 회수가능성에 이슈 없다 판단됨. 추가 가격 조정할 사항은 아님",
+          details: []
+        }
+      ]
+    }
+  }
+];
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// SIGNAL LABELS
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const SIGNAL_LABELS = {
+  green: "양호",
+  yellow: "주의",
+  red: "위험",
+  na: "—"
+};
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// RENDER FUNCTIONS
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function renderMainPage() {
+  const grid = document.getElementById('bond-grid');
+  grid.innerHTML = bonds.map(bond => {
+    const hantuDots = bond.opinions.hantu.map(o => `<span class="signal-dot ${o.signal}"></span>`).join('');
+    const kbDots = bond.opinions.kakaobank.map(o => `<span class="signal-dot ${o.signal}"></span>`).join('');
+    return `
+      <div class="bond-card" onclick="navigateToDetail(${bond.id})">
+        <div class="card-action">→</div>
+        <div class="bond-name">${bond.name}</div>
+        <div class="bond-amount">[${bond.amount}]</div>
+        <div class="bond-desc">${bond.description}</div>
+        <div class="bond-meta">
+          <span class="meta-tag maturity">만기 ${bond.maturity}</span>
+          <span class="meta-tag ${bond.healthClass}">${bond.health}</span>
+        </div>
+        <div class="signals-preview">
+          <div class="signal-group">
+            <span class="signal-group-label">한투</span>
+            ${hantuDots}
+          </div>
+          <div class="signal-group">
+            <span class="signal-group-label kb">카뱅</span>
+            ${kbDots}
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderDetailPage(bondId) {
+  const bond = bonds.find(b => b.id === bondId);
+  if (!bond) return;
+
+  const detailPage = document.getElementById('detail-page');
+  detailPage.innerHTML = `
+    <button class="back-btn" onclick="navigateToMain()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      목록으로 돌아가기
+    </button>
+
+    <div class="detail-header">
+      <div class="bond-meta">
+        <span class="meta-tag maturity">만기 ${bond.maturity}</span>
+        <span class="meta-tag ${bond.healthClass}">${bond.health}</span>
+      </div>
+      <h2>${bond.name}<span class="amount">[${bond.amount}]</span></h2>
+      <p class="desc">${bond.description}</p>
+    </div>
+
+    <div class="opinion-section">
+      <h3>
+        <span>한투 검토의견</span>
+        <span class="count">${bond.opinions.hantu.length} OPINIONS</span>
+      </h3>
+      <div class="opinion-cards">
+        ${bond.opinions.hantu.map((op, idx) => renderOpinionCard(op, `hantu-${bondId}-${idx}`)).join('')}
+      </div>
+    </div>
+
+    <div class="opinion-section">
+      <h3 class="kakaobank">
+        <span>카뱅 검토의견</span>
+        <span class="count">${bond.opinions.kakaobank.length} OPINIONS</span>
+      </h3>
+      <div class="opinion-cards">
+        ${bond.opinions.kakaobank.map((op, idx) => renderOpinionCard(op, `kb-${bondId}-${idx}`)).join('')}
+      </div>
+    </div>
+
+    <footer><p><b>내부 검토용 · 대외비</b><br>본건 인수 의사결정을 위한 경영진 내부 참고용. 외부 공유 금지.</p></footer>
+  `;
+}
+
+function renderOpinionCard(op, id) {
+  const label = SIGNAL_LABELS[op.signal] || "—";
+  const dot = op.signal === 'na' ? '○' : '●';
+  const hasDetails = op.details && op.details.length > 0;
+  const hasSummary = op.summary && op.summary.trim() !== "";
+
+  let summaryHtml = "";
+  if (op.noOpinion) {
+    summaryHtml = `<div class="opinion-summary no-opinion">${op.summary || "검토 의견 없음"}</div>`;
+  } else if (hasSummary) {
+    const bold = op.summaryBold ? "bold" : "";
+    summaryHtml = `<div class="opinion-summary ${bold}">${op.summary}</div>`;
+  }
+
+  let detailHtml = "";
+  if (hasDetails) {
+    if (hasSummary) {
+      // summary가 있으면 details는 토글로
+      detailHtml = `
+        <div class="opinion-detail hidden" id="detail-${id}">
+          <ul>${op.details.map(d => `<li>${d}</li>`).join('')}</ul>
+        </div>
+        <button class="toggle-btn" onclick="toggleDetail('${id}')">상세 보기 ▼</button>
+      `;
+    } else {
+      // summary가 없으면 details를 바로 표시
+      detailHtml = `
+        <div class="opinion-detail" style="border-top:none;padding-top:0;margin-top:0;">
+          <ul>${op.details.map(d => `<li>${d}</li>`).join('')}</ul>
+        </div>
+      `;
+    }
+  }
+
+  return `
+    <div class="opinion-card">
+      <div class="opinion-card-header">
+        <span class="signal-badge ${op.signal}">${dot} ${label}</span>
+        <span class="reviewer">${op.reviewer}</span>
+      </div>
+      ${summaryHtml}
+      ${detailHtml}
+    </div>
+  `;
+}
+
+function toggleDetail(id) {
+  const el = document.getElementById(`detail-${id}`);
+  const btn = el.nextElementSibling;
+  if (el.classList.contains('hidden')) {
+    el.classList.remove('hidden');
+    btn.textContent = '접기 ▲';
+  } else {
+    el.classList.add('hidden');
+    btn.textContent = '상세 보기 ▼';
+  }
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// NAVIGATION
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function navigateToDetail(bondId) {
+  const mainPage = document.getElementById('main-page');
+  const detailPage = document.getElementById('detail-page');
+  mainPage.classList.add('fade-out');
+  setTimeout(() => {
+    mainPage.style.display = 'none';
+    mainPage.classList.remove('fade-out');
+    renderDetailPage(bondId);
+    detailPage.style.display = 'block';
+    window.scrollTo(0, 0);
+    window.location.hash = `bond-${bondId}`;
+  }, 180);
+}
+
+function navigateToMain() {
+  const mainPage = document.getElementById('main-page');
+  const detailPage = document.getElementById('detail-page');
+  detailPage.classList.add('fade-out');
+  setTimeout(() => {
+    detailPage.style.display = 'none';
+    detailPage.classList.remove('fade-out');
+    mainPage.style.display = 'block';
+    window.scrollTo(0, 0);
+    history.replaceState(null, '', window.location.pathname);
+  }, 180);
+}
+
+function handleHashChange() {
+  const hash = window.location.hash;
+  if (hash.startsWith('#bond-')) {
+    const id = parseInt(hash.replace('#bond-', ''));
+    if (bonds.find(b => b.id === id)) {
+      document.getElementById('main-page').style.display = 'none';
+      document.getElementById('detail-page').style.display = 'block';
+      renderDetailPage(id);
+    }
+  } else {
+    document.getElementById('main-page').style.display = 'block';
+    document.getElementById('detail-page').style.display = 'none';
+  }
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// INIT
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+renderMainPage();
+window.addEventListener('hashchange', handleHashChange);
+if (window.location.hash) handleHashChange();
+</script>
+</body>
+</html>
